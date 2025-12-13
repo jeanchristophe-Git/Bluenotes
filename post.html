@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BlueNotes | Article</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Outfit', 'sans-serif'] },
+          colors: { brand: { dark:'#0f172a', primary:'#1e40af', light:'#f8fafc' } }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* "Mode lecture" */
+    .reader p { margin: 0.9rem 0; line-height: 1.9; font-size: 1.05rem; color: #334155; }
+    .reader h2, .reader h3 { margin-top: 1.6rem; font-weight: 800; color: #0f172a; }
+    .reader ul { margin: 0.8rem 0 0.8rem 1.25rem; list-style: disc; }
+    .reader li { margin: 0.35rem 0; }
+  </style>
+</head>
+
+<body class="bg-white text-slate-800 font-sans antialiased">
+
+  <!-- NAV simple -->
+  <nav class="bg-white border-b border-slate-100 sticky top-0 z-40">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="index.html" class="font-bold text-xl text-brand-dark">BlueNotes<span class="text-blue-500">.</span></a>
+      <a href="index.html" class="text-sm font-medium text-blue-700 hover:underline">← Retour</a>
+    </div>
+  </nav>
+
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+    <!-- Cover -->
+    <img id="cover" class="w-full h-72 object-cover rounded-2xl bg-slate-100" alt="">
+
+    <!-- Meta -->
+    <div class="mt-6 flex flex-wrap items-center gap-3 text-sm text-slate-500">
+      <span id="category" class="px-3 py-1 bg-blue-50 text-blue-700 font-semibold rounded-full"></span>
+      <span>•</span>
+      <span id="date"></span>
+      <span>•</span>
+      <span id="readtime"></span>
+    </div>
+
+    <!-- Title + excerpt -->
+    <h1 id="title" class="mt-4 text-3xl sm:text-4xl font-black text-brand-dark leading-tight"></h1>
+    <p id="excerpt" class="mt-4 text-lg text-slate-600"></p>
+
+    <!-- Content -->
+    <div id="content" class="reader mt-8"></div>
+
+    <div id="notfound" class="hidden mt-10 p-6 border border-slate-200 rounded-2xl">
+      <p class="font-bold text-brand-dark">Article introuvable.</p>
+      <p class="text-slate-600 mt-2">Vérifie l’ID dans l’URL (ex: <code>?id=2</code>).</p>
+    </div>
+  </main>
+
+  <script>
+    // IMPORTANT: Ici, il faut que chaque article ait un champ "content"
+    const articlesData = [
+      {
+        id: 2,
+        title: "C’est quoi un SOC (en simple)",
+        category: "Cybersecurity",
+        date: "10 Déc, 2024",
+        readTime: "5 min",
+        excerpt: "Derrière l’acronyme SOC : détection, investigation, réponse. Explication vulgarisée.",
+        image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
+        content: `
+          <p>Un SOC, c’est la tour de contrôle de la sécurité d’une organisation.</p>
+          <h3>Les 3 piliers</h3>
+          <ul>
+            <li><strong>People</strong> : analystes et équipes</li>
+            <li><strong>Process</strong> : playbooks et runbooks</li>
+            <li><strong>Technology</strong> : SIEM, alertes, dashboards</li>
+          </ul>
+        `
+      }
+      // Ajoute les autres articles ici avec "content"
+    ];
+
+    const params = new URLSearchParams(location.search);
+    const id = Number(params.get("id"));
+    const article = articlesData.find(a => a.id === id);
+
+    if (!article) {
+      document.getElementById("notfound").classList.remove("hidden");
+    } else {
+      document.title = `BlueNotes | ${article.title}`;
+      document.getElementById("cover").src = article.image;
+      document.getElementById("cover").alt = article.title;
+      document.getElementById("category").textContent = article.category;
+      document.getElementById("date").textContent = article.date;
+      document.getElementById("readtime").textContent = `${article.readTime} read`;
+      document.getElementById("title").textContent = article.title;
+      document.getElementById("excerpt").textContent = article.excerpt;
+      document.getElementById("content").innerHTML = article.content || "<p>(Contenu manquant)</p>";
+    }
+  </script>
+</body>
+</html>

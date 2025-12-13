@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BlueNotes | Cyber, Cloud & Dev</title>
+
+  <!-- Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Outfit', 'sans-serif'] },
+          colors: {
+            brand: {
+              dark: '#0f172a',
+              primary: '#1e40af',
+              accent: '#dbeafe',
+              light: '#f8fafc',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .category-active {
+      background-color: #1e40af;
+      color: white;
+      border-color: #1e40af;
+    }
+    /* Tailwind CDN n’a pas toujours line-clamp */
+    .line-clamp-3{
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+  </style>
+</head>
+
+<body class="bg-brand-light text-slate-800 font-sans antialiased">
+
+  <!-- NAV -->
+  <nav class="bg-white shadow-sm sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-20 items-center">
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center gap-2">
+          <span class="font-bold text-2xl text-brand-dark tracking-tight">BlueNotes<span class="text-blue-500">.</span></span>
+        </a>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex space-x-8 items-center">
+          <button data-category="Cybersecurity" class="nav-cat text-slate-600 hover:text-blue-700 font-medium transition">Cybersecurity</button>
+          <button data-category="Cloud" class="nav-cat text-slate-600 hover:text-blue-700 font-medium transition">Cloud (AWS)</button>
+          <button data-category="AI" class="nav-cat text-slate-600 hover:text-blue-700 font-medium transition">AI for Sec</button>
+          <button data-category="Dev" class="nav-cat text-slate-600 hover:text-blue-700 font-medium transition">Dev & Projects</button>
+        </div>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden flex items-center">
+          <button id="mobileBtn" class="text-slate-600 hover:text-blue-700 p-2">
+            <span class="text-xl">☰</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <button data-category="Cybersecurity" class="mobile-cat block w-full text-left px-3 py-2 text-base font-medium text-slate-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Cybersecurity</button>
+        <button data-category="Cloud" class="mobile-cat block w-full text-left px-3 py-2 text-base font-medium text-slate-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Cloud (AWS)</button>
+        <button data-category="AI" class="mobile-cat block w-full text-left px-3 py-2 text-base font-medium text-slate-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">AI for Sec</button>
+        <button data-category="Dev" class="mobile-cat block w-full text-left px-3 py-2 text-base font-medium text-slate-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Dev & Projects</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="bg-white pb-10 pt-10 px-4 sm:px-6 lg:px-8 text-center border-b border-gray-100">
+    <h1 class="text-4xl md:text-5xl font-bold text-brand-dark mb-4">
+      BlueNotes
+    </h1>
+    <p class="max-w-2xl mx-auto text-lg text-slate-500 mb-8">
+      Un journal technique sur la cybersécurité, le cloud AWS, l'IA et le dev.
+    </p>
+
+    <!-- Category Pills -->
+    <div class="flex flex-wrap justify-center gap-3" id="category-pills">
+      <button data-category="All" class="cat-btn category-active px-5 py-2 rounded-full border border-slate-200 text-sm font-medium transition hover:shadow-md">Tout</button>
+      <button data-category="Cybersecurity" class="cat-btn px-5 py-2 rounded-full border border-slate-200 text-slate-600 text-sm font-medium bg-white hover:border-blue-300 transition hover:shadow-md">Cybersecurity</button>
+      <button data-category="Cloud" class="cat-btn px-5 py-2 rounded-full border border-slate-200 text-slate-600 text-sm font-medium bg-white hover:border-blue-300 transition hover:shadow-md">Cloud</button>
+      <button data-category="AI" class="cat-btn px-5 py-2 rounded-full border border-slate-200 text-slate-600 text-sm font-medium bg-white hover:border-blue-300 transition hover:shadow-md">AI</button>
+      <button data-category="Dev" class="cat-btn px-5 py-2 rounded-full border border-slate-200 text-slate-600 text-sm font-medium bg-white hover:border-blue-300 transition hover:shadow-md">Dev</button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- Section Title -->
+    <div class="flex justify-between items-end mb-8">
+      <div>
+        <h2 class="text-2xl font-bold text-brand-dark">Articles</h2>
+        <span id="article-count" class="text-sm text-slate-500">Chargement...</span>
+      </div>
+
+      <!-- (option) si tu sépares blog complet -->
+      <a href="blog.html" class="text-sm font-medium text-blue-700 hover:underline">Voir plus →</a>
+    </div>
+
+    <!-- Grid -->
+    <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-brand-dark text-white py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="font-bold text-xl">BlueNotes<span class="text-blue-400">.</span></div>
+      <div class="text-xs text-slate-400">&copy; 2024 BlueNotes — Cyber, Cloud, AI & Dev.</div>
+    </div>
+  </footer>
+
+  <script>
+    // --- DATA ---
+    const articlesData = [
+      {
+        id: 1,
+        title: "Pourquoi BlueNotes : mon journal Dev → Cyber",
+        category: "Dev",
+        date: "12 Déc, 2024",
+        readTime: "3 min",
+        excerpt: "Le manifeste de ce blog. Pourquoi passer du dev pur à la cyber est une évolution naturelle.",
+        image: "https://images.unsplash.com/photo-1499750310159-525446b095ef?auto=format&fit=crop&w=1000&q=80",
+      },
+      {
+        id: 2,
+        title: "C’est quoi un SOC (en simple)",
+        category: "Cybersecurity",
+        date: "10 Déc, 2024",
+        readTime: "5 min",
+        excerpt: "Derrière l’acronyme SOC : détection, investigation, réponse. Explication vulgarisée.",
+        image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1000&q=80",
+      },
+      {
+        id: 3,
+        title: "Pourquoi les logs sont la base (CloudTrail, WAF)",
+        category: "Cybersecurity",
+        date: "08 Déc, 2024",
+        readTime: "6 min",
+        excerpt: "Sans logs, vous êtes aveugle. CloudTrail + WAF : comprendre ce qui se passe vraiment.",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=80",
+      },
+      {
+        id: 4,
+        title: "Brute force : comment on détecte sans ‘hacker’",
+        category: "AI",
+        date: "05 Déc, 2024",
+        readTime: "4 min",
+        excerpt: "Détection comportementale : repérer une brute force sans chercher à exploiter quoi que ce soit.",
+        image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1000&q=80",
+      },
+      {
+        id: 5,
+        title: "AWS WAF : ce que ça bloque vraiment",
+        category: "Cloud",
+        date: "01 Déc, 2024",
+        readTime: "7 min",
+        excerpt: "Règles managées vs custom, faux positifs, et comment le WAF protège en vrai.",
+        image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80",
+      },
+      {
+        id: 6,
+        title: "Mon mini dashboard sécurité : ce que je mesure",
+        category: "Dev",
+        date: "28 Nov, 2024",
+        readTime: "4 min",
+        excerpt: "Quelles métriques afficher pour que tout le monde comprenne vite (FAIL, BLOCK, top IP).",
+        image: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=1000&q=80",
+      }
+    ];
+
+    let currentFilter = "All";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderArticles("All");
+
+      // Pills click
+      document.querySelectorAll(".cat-btn").forEach(btn => {
+        btn.addEventListener("click", () => renderArticles(btn.dataset.category));
+      });
+
+      // Nav click
+      document.querySelectorAll(".nav-cat").forEach(btn => {
+        btn.addEventListener("click", () => renderArticles(btn.dataset.category));
+      });
+
+      // Mobile click
+      document.querySelectorAll(".mobile-cat").forEach(btn => {
+        btn.addEventListener("click", () => {
+          renderArticles(btn.dataset.category);
+          document.getElementById("mobile-menu").classList.add("hidden");
+        });
+      });
+
+      // Mobile toggle
+      document.getElementById("mobileBtn").addEventListener("click", () => {
+        document.getElementById("mobile-menu").classList.toggle("hidden");
+      });
+    });
+
+    function renderArticles(filter) {
+      currentFilter = filter;
+
+      // Update pills style
+      document.querySelectorAll(".cat-btn").forEach(btn => {
+        const active = btn.dataset.category === filter;
+        btn.classList.toggle("category-active", active);
+        btn.classList.toggle("bg-white", !active);
+        btn.classList.toggle("text-slate-600", !active);
+      });
+
+      const grid = document.getElementById("articles-grid");
+      const count = document.getElementById("article-count");
+
+      const filtered = filter === "All"
+        ? articlesData
+        : articlesData.filter(a => a.category === filter);
+
+      count.textContent = `${filtered.length} article(s)`;
+
+      grid.innerHTML = filtered.map(article => `
+        <a href="post.html?id=${article.id}" class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col border border-slate-100">
+          <div class="relative h-48 overflow-hidden">
+            <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+            <div class="absolute top-4 left-4">
+              <span class="px-3 py-1 bg-white/90 backdrop-blur-md text-xs font-bold text-brand-primary rounded-md uppercase tracking-wide shadow-sm">
+                ${article.category}
+              </span>
+            </div>
+          </div>
+
+          <div class="p-6 flex flex-col flex-grow">
+            <div class="flex items-center text-xs text-slate-400 mb-3 space-x-2">
+              <span>${article.date}</span>
+              <span class="w-1 h-1 bg-slate-300 rounded-full"></span>
+              <span>${article.readTime} read</span>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-800 mb-3 group-hover:text-blue-700 transition leading-snug">
+              ${article.title}
+            </h3>
+
+            <p class="text-slate-500 text-sm line-clamp-3 mb-4 flex-grow">
+              ${article.excerpt}
+            </p>
+
+            <div class="mt-auto flex items-center justify-between border-t border-slate-50 pt-4">
+              <span class="text-xs font-medium text-slate-600">BlueNotes</span>
+              <span class="text-blue-600 text-sm font-medium group-hover:underline">Lire →</span>
+            </div>
+          </div>
+        </a>
+      `).join("");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BlueNotes — Admin Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-900">
+  <main class="max-w-md mx-auto px-4 py-16">
+    <a href="index.html" class="text-sm text-blue-700 hover:underline">← Retour</a>
+
+    <h1 class="mt-6 text-3xl font-black">Connexion Admin</h1>
+    <p class="mt-2 text-slate-600">
+      Accès réservé. Connexion via Amazon Cognito.
+    </p>
+
+    <button id="btnLogin"
+      class="mt-8 w-full rounded-xl bg-slate-900 text-white py-3 font-semibold hover:bg-slate-800">
+      Se connecter
+    </button>
+
+    <p id="status" class="mt-6 text-sm text-slate-500"></p>
+  </main>
+
+  <script>
+    // ===== CONFIG À VÉRIFIER =====
+    const COGNITO_DOMAIN = "https://us-west-1hasrqghtu.auth.us-west-1.amazoncognito.com"; // <-- remplace
+    const CLIENT_ID = "4dv5kvbs477r32p045juoqtqdd";
+    const REDIRECT_URI = window.location.origin + "/login.html";
+    const SCOPES = "openid email profile";
+    // ============================
+
+    const statusEl = document.getElementById("status");
+
+    // 1) Si Cognito nous redirige ici avec #id_token=...
+    function handleRedirectTokens() {
+      const hash = window.location.hash.startsWith("#")
+        ? window.location.hash.slice(1)
+        : "";
+
+      if (!hash) return false;
+
+      const params = new URLSearchParams(hash);
+      const idToken = params.get("id_token");
+      const accessToken = params.get("access_token");
+      const expiresIn = params.get("expires_in"); // seconds
+
+      if (!idToken) return false;
+
+      sessionStorage.setItem("bn_id_token", idToken);
+      if (accessToken) sessionStorage.setItem("bn_access_token", accessToken);
+      if (expiresIn) {
+        const expMs = Date.now() + (parseInt(expiresIn, 10) * 1000);
+        sessionStorage.setItem("bn_token_exp", String(expMs));
+      }
+
+      // Nettoie l'URL (enlève le #token)
+      history.replaceState(null, "", window.location.pathname);
+
+      statusEl.textContent = "Connecté ✅ Redirection…";
+      window.location.href = "admin.html";
+      return true;
+    }
+
+    // 2) Construire l’URL Cognito /authorize
+    function buildAuthorizeUrl() {
+      const url = new URL(COGNITO_DOMAIN + "/oauth2/authorize");
+      url.searchParams.set("client_id", CLIENT_ID);
+      url.searchParams.set("response_type", "token"); // implicit grant
+      url.searchParams.set("scope", SCOPES);
+      url.searchParams.set("redirect_uri", REDIRECT_URI);
+      return url.toString();
+    }
+
+    // Si déjà connecté, va direct admin
+    (function init() {
+      const existing = sessionStorage.getItem("bn_id_token");
+      if (existing) {
+        window.location.href = "admin.html";
+        return;
+      }
+      handleRedirectTokens();
+    })();
+
+    // 3) Click login
+    document.getElementById("btnLogin").addEventListener("click", () => {
+      statusEl.textContent = "Redirection vers Cognito…";
+      window.location.href = buildAuthorizeUrl();
+    });
+  </script>
+</body>
+</html>
