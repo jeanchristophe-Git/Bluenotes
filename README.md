@@ -1,16 +1,16 @@
-# BlueNotes 🧠🔐
+# BlueNotes
 Un mini-projet **PFE CEDITECH** : blog statique + **accès Admin sécurisé** via **Amazon Cognito (Hosted UI)**, déployé en ligne sur **AWS Amplify** avec un pipeline **CI/CD GitHub → Amplify**.
 
 ---
 
-## 🎯 Objectif du projet
+## Objectif du projet
 - Publier un blog accessible au public (lecture).
 - Protéger la partie **Admin** (dashboard/gestion) via une authentification Cognito.
 - Déployer et mettre à jour automatiquement l’application via GitHub (workflow “entreprise”).
 
 ---
 
-## 🧩 Fonctionnalités
+##  Fonctionnalités
 ### Côté public
 - Landing page + liste des articles
 - Lecture d’un article (page dédiée)
@@ -22,14 +22,14 @@ Un mini-projet **PFE CEDITECH** : blog statique + **accès Admin sécurisé** vi
 
 ---
 
-## 🏗️ Architecture (simple)
+##  Architecture (simple)
 **Utilisateur (navigateur)** → **AWS Amplify (hosting)**  
 **Admin** → **Cognito Hosted UI** → redirection vers **admin.html**  
 **GitHub** → (push) → **Amplify build & deploy**
 
 ---
 
-## 🧰 Stack / Outils
+##  Stack / Outils
 - **Frontend** : HTML / CSS / JavaScript (vanilla) + Tailwind CDN
 - **Auth** : Amazon Cognito (User Pool + Hosted UI)
 - **CI/CD & Déploiement** : GitHub + AWS Amplify
@@ -37,7 +37,7 @@ Un mini-projet **PFE CEDITECH** : blog statique + **accès Admin sécurisé** vi
 
 ---
 
-## 📁 Structure du projet
+## Structure du projet
 bluenotes/
 ├─ index.html # page d’accueil + liste des articles
 ├─ post.html # lecture d’un article (page “mode lecture”)
@@ -46,7 +46,7 @@ bluenotes/
 └─ README.md
 ---
 
-## 🚀 Déploiement (AWS Amplify)
+##  Déploiement (AWS Amplify)
 1. Push du code sur GitHub (`main`)
 2. AWS Amplify → **New app** → **Host web app**
 3. Connecter le repo GitHub + choisir la branche `main`
@@ -56,7 +56,7 @@ bluenotes/
 
 ---
 
-## 🔐 Authentification (Amazon Cognito)
+##  Authentification (Amazon Cognito)
 Configuration typique :
 - User Pool
 - Email comme identifiant
@@ -67,19 +67,19 @@ Configuration typique :
 
 ---
 
-## 🧪 Démo / Tests
+##  Démo / Tests
 - Accès public : `index.html` → lecture posts
 - Accès admin : clic “Admin” → redirection Cognito → retour sur dashboard
 
 ---
 
-## 📌 Notes importantes
+## Notes importantes
 - Ne pas exposer de secrets dans le repo.
 - Si tu changes le domaine Amplify, pense à mettre à jour les **Callback URLs / Sign-out URLs** dans Cognito.
 
 ---
 
-## 👤 Auteur
+##  Auteur
 **Jean Christophe Désiré Bogbé**  
 PFB CEDITECH 
 
